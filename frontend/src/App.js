@@ -19,6 +19,10 @@ function App() {
     e.target.reset();
   }
 
+  const removeItem = (index) => {
+
+  }
+
   return (
     <div className="App">
       <header className="App-header">
