@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 // user routes
-app.get('/signin', userscontroller.signIn);
+app.post('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
 
 app.listen(5000);

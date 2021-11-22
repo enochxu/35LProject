@@ -6,8 +6,23 @@ const Users = db.collection('users');
 
 const SALT_ROUNDS = 10;
 
+// consider using jwt?
 const signIn = async (req, res) => {
+  if (!req.body.username || !req.body.password) {
+    res.status(400).send('Username or password missing');
+  }
 
+  const user = await Users.findOne({ username: req.body.username });
+  if (!user) {
+    return res.status(400).json({ message: 'User does not exist.' });
+  }
+
+  const match = await bcrypt.compare(req.body.password, user.password);
+  if (!match) {
+    return res.status(400).json({ message: 'Incorrect password.' });
+  }
+
+  return res.status(200).json({ message: 'User signed in.' });
 }
 
 
@@ -34,6 +49,9 @@ const createAccount = async (req, res) => {
   });
 }
 
+const authenticate = async (req, res) => {
+
+}
 
 module.exports = {
   signIn,
