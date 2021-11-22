@@ -7,3 +7,6 @@
 `cd backend`
 `npm install`
 `npm run start`
+
+The backend will be using a local mongodb database.
+Make sure that mongodb is running on your computer for the backend to work.
