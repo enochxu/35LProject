@@ -30,6 +30,7 @@ function App() {
       </header>
       <div className="list">
         <div className='list-items'>
+        {/* add remove itme button */}
           {
             items.map((item, index) => {
               return (
