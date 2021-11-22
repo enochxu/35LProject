@@ -21,10 +21,8 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.get('/signin', (req, res) => {
-
-});
-
+// user routes
+app.get('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
 
 app.listen(5000);

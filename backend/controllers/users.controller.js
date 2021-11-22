@@ -1,7 +1,10 @@
 const mongo = require('../mongo')
+const bcrypt = require('bcrypt');
 const dbClient = mongo;
 const db = dbClient.db('todolist');
 const Users = db.collection('users');
+
+const SALT_ROUNDS = 10;
 
 const signIn = async (req, res) => {
 
@@ -18,9 +21,10 @@ const createAccount = async (req, res) => {
     return res.status(400).json({ message: 'Username already exists.' });
   }
 
+  const hash = await bcrypt.hash(req.body.password, SALT_ROUNDS);
   const newUser = {
     username: req.body.username,
-    password: req.body.password,
+    password: hash
   }
 
   Users.insertOne(newUser).then((result) => {
