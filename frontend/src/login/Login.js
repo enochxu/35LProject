@@ -16,6 +16,11 @@ const Login = () => {
     password: password,
   };
 
+  const turnOnErrorMessage = () => {
+    var x = document.getElementById("errorMessage");
+      x.style.display = "block";
+  };
+
   const navigate = useNavigate();
   const handleButton = (e) => {
     e.preventDefault();
@@ -35,6 +40,7 @@ const Login = () => {
         }
         else {
           // display error message
+          turnOnErrorMessage();
         }
       // navigate.push('/');
     }).catch((err) => {
@@ -49,6 +55,7 @@ const Login = () => {
     <div className="create">
       <div className="userform">
         <h2 className="pagename">Login</h2>
+        <div id="errorMessage">Incorrect username or password. Please try again. </div>
         <form>
           <input
             type="text"
