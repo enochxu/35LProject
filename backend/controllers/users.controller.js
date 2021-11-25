@@ -6,21 +6,11 @@ const db = dbClient.db('todolist');
 const Users = db.collection('users');
 
 const SALT_ROUNDS = 10;
-// created using generateKey.js
-// generallly, bad idea to store this in plain text here, but fine for the purpose of this project
-const JWT_SECRET = "4e2b288f54953de72a2fdea8ad0f5f639e1ac7f6e00238c8f3412236370f83d1";
-
-const getUser = async(token) => {
-  const decoded = jwt.verify(token, JWT_SECRET);
-  const user = await Users.findOne({ username: decoded.username });
-  return user; 
-}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // consider using jwt?
 const signIn = async (req, res) => {
   const JWT_EXPIRY = 60 * 60 * 24; // 1 day
-
-
 
   if (!req.body.username || !req.body.password) {
     res.status(400).send('Username or password missing');
@@ -43,6 +33,7 @@ const signIn = async (req, res) => {
   });
 
   res.cookie('token', token, { maxAge: JWT_EXPIRY });
+  res.cookie('username', user.username, { maxAge: JWT_EXPIRY });
 
   return res.status(200).json({ message: 'User signed in.' });
 }
@@ -61,7 +52,9 @@ const createAccount = async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, SALT_ROUNDS);
   const newUser = {
     username: req.body.username,
-    password: hash
+    password: hash,
+    sharedWith: [req.body.username],
+    list: [],
   }
 
   Users.insertOne(newUser).then((result) => {
@@ -72,8 +65,8 @@ const createAccount = async (req, res) => {
 }
 
 const addList = async (req, res) => {
-
-  
+  // get current user
+  // list access field
 }
 
 const authenticate = async (req, res) => {
@@ -83,4 +76,5 @@ const authenticate = async (req, res) => {
 module.exports = {
   signIn,
   createAccount,
+  addList,
 }

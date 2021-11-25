@@ -1,9 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const dotenv = require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const userscontroller = require('./controllers/users.controller');
-const listcontrolelr = require('./controllers/list.controller');
-const mongo = require('./mongo')
+const listcontroller = require('./controllers/list.controller');
+const mongo = require('./mongo');
+const npmlog = require('npmlog');
 
 const app = express();
 
@@ -12,9 +15,9 @@ const corsOptions = {
   credentials: true,
 };
 
-
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,7 +31,7 @@ app.post('/createaccount', userscontroller.createAccount);
 app.put('addlist', userscontroller.addList);
 
 // list routes
-app.get('/getlist:username', );
-app.post('/additem',);
+app.get('/getlist/:username', listcontroller.getList);
+app.post('/additem', listcontroller.addItem);
 
 app.listen(5000);
