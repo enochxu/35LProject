@@ -4,9 +4,9 @@ import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import "./login.css";
 
-const Login = () => {
+const Login = ({checkLogin}) => {
   useEffect(() => {
-    document.title = "Sign In";
+    document.title = "Login";
   });
 
   const [username, setUsername] = useState("");
@@ -34,10 +34,10 @@ const Login = () => {
       url: `http://localhost:5000/signin`,
       withCredentials: true,
     }).then((res) => {
+      checkLogin();
       navigate("/");
     }).catch((err) => {
       setShowError(true);
-      // create error message / banner?
     });
   }
 

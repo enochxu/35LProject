@@ -26,12 +26,15 @@ app.get('/', (req, res) => {
 });
 
 // user routes
+// app.get()
 app.post('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
-app.put('addlist', userscontroller.addList);
+app.get('/authenticate', userscontroller.authenticate);
+app.post('/logout', userscontroller.logout);
+// app.put('/addlist', userscontroller.addList); 
 
 // list routes
-app.get('/getlist/:username', listcontroller.getList);
+app.get('/getlist', listcontroller.getList);
 app.post('/additem', listcontroller.addItem);
 
 app.listen(5000);

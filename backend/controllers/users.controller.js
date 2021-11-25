@@ -1,6 +1,7 @@
 const mongo = require('../mongo');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const getUser = require('../helpers/getUser');
 const dbClient = mongo;
 const db = dbClient.db('todolist');
 const Users = db.collection('users');
@@ -13,7 +14,7 @@ const signIn = async (req, res) => {
   const JWT_EXPIRY = 60 * 60 * 24; // 1 day
 
   if (!req.body.username || !req.body.password) {
-    res.status(400).send('Username or password missing');
+    return res.status(400).send('Username or password missing');
   }
 
   const user = await Users.findOne({ username: req.body.username });
@@ -32,10 +33,11 @@ const signIn = async (req, res) => {
     expiresIn: JWT_EXPIRY,
   });
 
-  res.cookie('token', token, { maxAge: JWT_EXPIRY });
-  res.cookie('username', user.username, { maxAge: JWT_EXPIRY });
+  res.cookie('token', token, { maxAge: JWT_EXPIRY*1000 });
+  res.cookie('username', user.username, { maxAge: JWT_EXPIRY*1000 });
 
-  return res.status(200).json({ message: 'User signed in.' });
+  res.status(200).json({ message: "User signed in.", username: user.username });
+  return;
 }
 
 
@@ -69,12 +71,29 @@ const addList = async (req, res) => {
   // list access field
 }
 
-const authenticate = async (req, res) => {
+const logout = async (req, res) => {
+  res.clearCookie('token');
+  res.clearCookie('username');
+  return res.status(200).json({ message: 'User logged out.' });
+}
 
+const authenticate = async (req, res) => {
+  // get current user
+  if (!req.cookies.token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  const user = await getUser(req.cookies.token);
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  } else {
+    return res.status(200).json({ message: 'User authenticated.', username: user.username });
+  }
 }
 
 module.exports = {
   signIn,
   createAccount,
   addList,
+  authenticate,
+  logout,
 }

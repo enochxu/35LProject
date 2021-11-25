@@ -16,15 +16,25 @@ const getList = async (req, res) => {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  if (reqUser.hasAccess.includes(reqUser.username)) {
-    const listUser = await Users.findOne({ username: req.params.username });
-    if (!listUser) {
-      return res.status(400).json({ message: 'User does not exist.' });
-    }
-    return res.status(200).json({ list: listUser.list });
-  } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+  try {
+    const users = await Users.find(
+      { username: { $in: reqUser.hasAccess } },
+      { projection: { username: 1, list: 1, _id: 0 } }
+    ).toArray();
+    return res.status(200).json(users);
+  } catch (err) {
+    return res.status(500).json({ message: "Could not get list." });
   }
+
+  // if (reqUser.hasAccess.includes(reqUser.username)) {
+  //   const listUser = await Users.findOne({ username: req.params.username });
+  //   if (!listUser) {
+  //     return res.status(400).json({ message: 'User does not exist.' });
+  //   }
+  //   return res.status(200).json({ list: listUser.list });
+  // } else {
+  //   return res.status(401).json({ message: 'Unauthorized' });
+  // }
 }
 
 const addItem = async (req, res) => {
