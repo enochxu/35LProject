@@ -6,14 +6,21 @@ const db = dbClient.db('todolist');
 const Users = db.collection('users');
 
 const SALT_ROUNDS = 10;
+// created using generateKey.js
+// generallly, bad idea to store this in plain text here, but fine for the purpose of this project
+const JWT_SECRET = "4e2b288f54953de72a2fdea8ad0f5f639e1ac7f6e00238c8f3412236370f83d1";
+
+const getUser = async(token) => {
+  const decoded = jwt.verify(token, JWT_SECRET);
+  const user = await Users.findOne({ username: decoded.username });
+  return user; 
+}
 
 // consider using jwt?
 const signIn = async (req, res) => {
   const JWT_EXPIRY = 60 * 60 * 24; // 1 day
 
-  // created using generateKey.js
-  // generallly, bad idea to store this in plain text here, but fine for the purpose of this project
-  const JWT_SECRET = "4e2b288f54953de72a2fdea8ad0f5f639e1ac7f6e00238c8f3412236370f83d1";
+
 
   if (!req.body.username || !req.body.password) {
     res.status(400).send('Username or password missing');
@@ -62,6 +69,11 @@ const createAccount = async (req, res) => {
   }).catch((err) => {
     return res.status(400).json({ message: 'Error creating user.' });
   });
+}
+
+const addList = async (req, res) => {
+
+  
 }
 
 const authenticate = async (req, res) => {

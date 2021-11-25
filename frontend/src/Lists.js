@@ -3,10 +3,10 @@ import { Button, InputGroup, FormControl } from "react-bootstrap";
 import './index.css';
 
 const Lists = () => {
-    useEffect(() => {
-        document.title = 'Lists';
-    });
-    const [items, setItems] = useState([]);
+  useEffect(() => {
+      document.title = 'Lists';
+  });
+  const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState("");
 
   const handleChange = (e) => {
@@ -25,7 +25,6 @@ const Lists = () => {
   const removeItem = (index) => {
 
   }
-
 
     return(   
         <div className="App">
