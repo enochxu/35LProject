@@ -6,7 +6,7 @@ import "./login.css";
 
 const Login = () => {
   useEffect(() => {
-    document.title = "Sign In";
+    document.title = "Login";
   });
 
   const [username, setUsername] = useState("");
@@ -37,7 +37,6 @@ const Login = () => {
       navigate("/");
     }).catch((err) => {
       setShowError(true);
-      // create error message / banner?
     });
   }
 

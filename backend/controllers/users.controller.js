@@ -13,7 +13,7 @@ const signIn = async (req, res) => {
   const JWT_EXPIRY = 60 * 60 * 24; // 1 day
 
   if (!req.body.username || !req.body.password) {
-    res.status(400).send('Username or password missing');
+    return res.status(400).send('Username or password missing');
   }
 
   const user = await Users.findOne({ username: req.body.username });
@@ -35,7 +35,8 @@ const signIn = async (req, res) => {
   res.cookie('token', token, { maxAge: JWT_EXPIRY });
   res.cookie('username', user.username, { maxAge: JWT_EXPIRY });
 
-  return res.status(200).json({ message: 'User signed in.' });
+  res.status(200).json({ message: "User signed in.", username: user.username });
+  return;
 }
 
 
