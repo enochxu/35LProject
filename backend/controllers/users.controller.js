@@ -32,8 +32,8 @@ const signIn = async (req, res) => {
     expiresIn: JWT_EXPIRY,
   });
 
-  res.cookie('token', token, { maxAge: JWT_EXPIRY });
-  res.cookie('username', user.username, { maxAge: JWT_EXPIRY });
+  res.cookie('token', token, { maxAge: JWT_EXPIRY*1000 });
+  res.cookie('username', user.username, { maxAge: JWT_EXPIRY*1000 });
 
   res.status(200).json({ message: "User signed in.", username: user.username });
   return;
