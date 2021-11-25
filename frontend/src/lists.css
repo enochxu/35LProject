@@ -18,3 +18,7 @@
     margin-bottom: 10px;
     font-weight: bold;
 }
+
+.App-header a {
+    font-size: small;
+}

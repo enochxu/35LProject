@@ -5,7 +5,7 @@ import axios from "axios";
 import "./index.css";
 import "./lists.css"
 
-const Lists = () => {
+const Lists = ({checkLogin}) => {
   useEffect(() => {
     document.title = "Lists";
     axios({
@@ -65,10 +65,27 @@ const Lists = () => {
 
   const removeItem = (index) => {};
 
+  const logout = () => {
+    axios({
+      method: "post",
+      url: `http://localhost:5000/logout`,
+      withCredentials: true,
+    })
+    .then((res) => {
+      checkLogin();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <p>To-do List</p>
+        <Button variant="danger" size="sm" onClick={logout}>
+          Logout
+        </Button>
       </header>
       <div className="App-body">
         <div className="list-selector">

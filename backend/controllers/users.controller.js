@@ -71,6 +71,12 @@ const addList = async (req, res) => {
   // list access field
 }
 
+const logout = async (req, res) => {
+  res.clearCookie('token');
+  res.clearCookie('username');
+  return res.status(200).json({ message: 'User logged out.' });
+}
+
 const authenticate = async (req, res) => {
   // get current user
   if (!req.cookies.token) {
@@ -89,4 +95,5 @@ module.exports = {
   createAccount,
   addList,
   authenticate,
+  logout,
 }

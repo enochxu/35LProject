@@ -35,7 +35,7 @@ function App() {
     <Router>
       {loading ? (<Loading />) : (
         <Routes>
-          <Route exact path="/" element={(loggedIn && <Lists/>) || (<Navigate to="/login"/>)}/>
+          <Route exact path="/" element={(loggedIn && <Lists checkLogin={checkLogin}/>) || (<Navigate to="/login"/>)}/>
           <Route exact path="/login" element={(!loggedIn && <Login checkLogin={checkLogin}/>) || (<Navigate to="/"/>)}/>
           <Route exact path="/createaccount" element={<CreateAccount/>}/>  
         </Routes>

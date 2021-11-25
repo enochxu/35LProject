@@ -30,6 +30,7 @@ app.get('/', (req, res) => {
 app.post('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
 app.get('/authenticate', userscontroller.authenticate);
+app.post('/logout', userscontroller.logout);
 // app.put('/addlist', userscontroller.addList); 
 
 // list routes
