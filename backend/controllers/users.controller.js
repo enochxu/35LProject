@@ -1,6 +1,7 @@
 const mongo = require('../mongo');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const getUser = require('../helpers/getUser');
 const dbClient = mongo;
 const db = dbClient.db('todolist');
 const Users = db.collection('users');
@@ -71,11 +72,21 @@ const addList = async (req, res) => {
 }
 
 const authenticate = async (req, res) => {
-
+  // get current user
+  if (!req.cookies.token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  const user = await getUser(req.cookies.token);
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  } else {
+    return res.status(200).json({ message: 'User authenticated.', username: user.username });
+  }
 }
 
 module.exports = {
   signIn,
   createAccount,
   addList,
+  authenticate,
 }

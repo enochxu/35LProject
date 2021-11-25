@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
 // app.get()
 app.post('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
+app.get('/authenticate', userscontroller.authenticate);
 // app.put('/addlist', userscontroller.addList); 
 
 // list routes
