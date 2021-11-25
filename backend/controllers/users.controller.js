@@ -53,7 +53,7 @@ const createAccount = async (req, res) => {
   const newUser = {
     username: req.body.username,
     password: hash,
-    sharedWith: [req.body.username],
+    hasAccess: [req.body.username],
     list: [],
   }
 

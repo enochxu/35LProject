@@ -16,13 +16,12 @@ const getList = async (req, res) => {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const listUser = await Users.findOne({ username: req.params.username });
-  if (!listUser) {
-    return res.status(400).json({ message: 'User does not exist.' });
-  }
-
-  if (listUser.sharedWith.includes(reqUser.username)) {
-    return res.status(200).json(listUser.list);
+  if (reqUser.hasAccess.includes(reqUser.username)) {
+    const listUser = await Users.findOne({ username: req.params.username });
+    if (!listUser) {
+      return res.status(400).json({ message: 'User does not exist.' });
+    }
+    return res.status(200).json({ list: listUser.list });
   } else {
     return res.status(401).json({ message: 'Unauthorized' });
   }
