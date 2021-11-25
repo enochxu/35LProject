@@ -1,0 +1,20 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login {
+    padding: 10%;
+    width: min(800px, 80%);
+}
+
+.login form {
+    /* place-items: center; */
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.login Button {
+    margin-top: 10px;
+}

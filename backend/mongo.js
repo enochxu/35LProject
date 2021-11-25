@@ -14,6 +14,4 @@ client.connect((err, db) => {
   }
 });
 
-
-
 module.exports = client;

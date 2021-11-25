@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
-import "../index.css";
+import "./login.css";
 
 const Login = () => {
   useEffect(() => {
     document.title = "Sign In";
   });
 
-  const [username, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const user = {
-    username: username,
-    password: password,
-  };
-
-  const turnOnErrorMessage = () => {
-    var x = document.getElementById("errorMessage");
-      x.style.display = "block";
-  };
-
+  const [showError, setShowError] = useState(false);
+  
   const navigate = useNavigate();
-  const handleButton = (e) => {
+
+  const handleChange = (e) => {
+    if (e.target.id === "username") {
+      setUsername(e.target.value);
+    } else if (e.target.id === "password") {
+      setPassword(e.target.value);
+    }
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     axios({
       method: "post",
@@ -30,54 +31,47 @@ const Login = () => {
         username: username,
         password: password,
       },
-      url: `http://localhost:5000/verifyaccount`,
+      url: `http://localhost:5000/signin`,
       withCredentials: true,
-    }).then(
-      (res) => {
-        console.log(res)
-        if (res == "true") {
-          // send user to login page 
-        }
-        else {
-          // display error message
-          turnOnErrorMessage();
-        }
-      // navigate.push('/');
+    }).then((res) => {
+      navigate("/");
     }).catch((err) => {
-      console.log(err);
+      setShowError(true);
       // create error message / banner?
     });
-    // redirect to list or somewhere you want
-    // navigate.push('/');
-  };
+  }
 
   return (
-    <div className="create">
-      <div className="userform">
-        <h2 className="pagename">Login</h2>
-        <div id="errorMessage">Incorrect username or password. Please try again. </div>
-        <form>
+    <div className="main">
+      <div className="login">
+        <div className="header">
+          <h1>Login</h1>
+          {showError && <Alert variant="danger">Invalid Credentials</Alert>}
+        </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
+            id="username"
             required
-            value={username}
-            onChange={(e) => setName(e.target.value)}
             placeholder="Username"
+            onChange={handleChange}
           />
+          <label htmlFor="password">Password:</label>
           <input
-            type="text"
+            type="password"
+            id="password"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+            onChange={handleChange}
           />
-          <button onClick={handleButton}> Login </button>
+          <Button variant="primary" type="submit"> 
+            Login
+          </Button>
         </form>
-      </div>
-      <div className="redirect">
-        <label className="message">Create an account</label>
-        <div className="accountlinks">
-          {/* <Link to="/createAccount" className="link">Create Account</Link> */}
+        
+        <div className="create-account">
+          No account? <Link to="/createaccount">Create one</Link>
         </div>
       </div>
     </div>
