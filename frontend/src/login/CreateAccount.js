@@ -37,7 +37,6 @@ const CreateAccount = () => {
       setShowError(true);
     });
     // redirect to list or somewhere you want
-    // navigate.push('/');
   };
 
   return (
@@ -64,7 +63,7 @@ const CreateAccount = () => {
           />
           {/* <button onClick={handleButton}> Create Account </button> */}
           <Button variant="primary" type="submit"> 
-            Login
+            Create Account
           </Button>
         </form>
         <div className="accountlinks">
