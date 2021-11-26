@@ -66,9 +66,32 @@ const createAccount = async (req, res) => {
   });
 }
 
-const addList = async (req, res) => {
+const shareList = async (req, res) => {
   // get current user
   // list access field
+  if (!req.cookies.token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  if (!req.body.shareUsername) {
+    return res.status(400).json({ message: 'Username missing.' });
+  }
+
+  const user = await getUser(req.cookies.token);
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  Users.updateOne(
+    { username: req.body.shareUsername },
+    { $push: { hasAccess: user.username } }
+  )
+    .then(() => {
+      res.status(200).json({ message: "Added User." });
+    })
+    .catch((err) => {
+      return res.status(400).json({ message: "User does not exist." });
+    });
 }
 
 const logout = async (req, res) => {
@@ -93,7 +116,7 @@ const authenticate = async (req, res) => {
 module.exports = {
   signIn,
   createAccount,
-  addList,
+  shareList,
   authenticate,
   logout,
 }

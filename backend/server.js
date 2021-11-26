@@ -31,7 +31,7 @@ app.post('/signin', userscontroller.signIn);
 app.post('/createaccount', userscontroller.createAccount);
 app.get('/authenticate', userscontroller.authenticate);
 app.post('/logout', userscontroller.logout);
-// app.put('/addlist', userscontroller.addList); 
+app.put('/sharelist', userscontroller.shareList); 
 
 // list routes
 app.get('/getlist', listcontroller.getList);
