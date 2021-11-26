@@ -68,7 +68,6 @@ const createAccount = async (req, res) => {
 
 const shareList = async (req, res) => {
   // get current user
-  // list access field
   if (!req.cookies.token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
@@ -84,10 +83,10 @@ const shareList = async (req, res) => {
 
   Users.updateOne(
     { username: req.body.shareUsername },
-    { $push: { hasAccess: user.username } }
+    { $addToSet: { hasAccess: user.username } }
   )
     .then(() => {
-      res.status(200).json({ message: "Added User." });
+      res.status(200).json({ message: "Shared succesfully." });
     })
     .catch((err) => {
       return res.status(400).json({ message: "User does not exist." });
