@@ -32,7 +32,7 @@ const Lists = ({checkLogin}) => {
   const [showError, setShowError] = useState(false);
 
   const handleSelector = (e) => {
-
+    setListNum(e.target.value);
   }
 
   const handleChange = (e) => {
@@ -41,7 +41,7 @@ const Lists = ({checkLogin}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newItem) {
+    if (listNum == 0 && newItem) {
       axios({
         method: "post",
         url: `http://localhost:5000/additem`,
@@ -63,7 +63,7 @@ const Lists = ({checkLogin}) => {
     e.target.reset();
   };
 
-  const removeItem = (index) => {};
+  // const removeItem = (index) => {};
 
   const logout = () => {
     axios({
@@ -76,7 +76,7 @@ const Lists = ({checkLogin}) => {
     })
     .catch((err) => {
       console.log(err);
-    });
+    }); 
   }
 
   return (
@@ -92,7 +92,7 @@ const Lists = ({checkLogin}) => {
           <div className="selector-label">Select a List:</div>
           {
             loading ? (<Loading /> ) : (
-            <Form.Select aria-label="Select a list">
+            <Form.Select aria-label="Select a list" onChange={handleSelector}>
             {
               usernames.map((username, index) => {
                 return (
@@ -121,18 +121,22 @@ const Lists = ({checkLogin}) => {
             )
           }
 
-          <form onSubmit={handleSubmit}>
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Type here"
-                aria-label="new-item"
-                onChange={handleChange}
-              />
-              <Button variant="primary" type="submit">
-                Add to list
-              </Button>
-            </InputGroup>
-          </form>
+          {
+            listNum == 0 &&
+            (<form onSubmit={handleSubmit}>
+              <InputGroup className="mb-3">
+                <FormControl
+                  placeholder="Type here"
+                  aria-label="new-item"
+                  onChange={handleChange}
+                />
+                <Button variant="primary" type="submit">
+                  Add to list
+                </Button>
+              </InputGroup>
+            </form>
+            )
+          }
           {showError && <Alert variant="danger">Error Adding Item</Alert>}
         </div>
       </div>

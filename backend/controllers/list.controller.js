@@ -1,6 +1,4 @@
 const mongo = require('../mongo');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const dbClient = mongo;
 const db = dbClient.db('todolist');
 const Users = db.collection('users');
@@ -25,16 +23,6 @@ const getList = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: "Could not get list." });
   }
-
-  // if (reqUser.hasAccess.includes(reqUser.username)) {
-  //   const listUser = await Users.findOne({ username: req.params.username });
-  //   if (!listUser) {
-  //     return res.status(400).json({ message: 'User does not exist.' });
-  //   }
-  //   return res.status(200).json({ list: listUser.list });
-  // } else {
-  //   return res.status(401).json({ message: 'Unauthorized' });
-  // }
 }
 
 const addItem = async (req, res) => {
