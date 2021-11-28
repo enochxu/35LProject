@@ -21,6 +21,13 @@ Install the following in terminal:
 After meeting above, run the following command in the terminal:
 ### `brew tap mongodb/brew`
 ### `brew install mongodb-community@5.0`
+
+To start the mongoDB service, run the following in terminal:
+### `brew services start mongodb-community@5.0`
+
+To stop the mongoDB service, run the following in terminal:
+### `brew services stop mongodb-community@5.0`
+
 source: `https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#std-label-osx-prereq`
 
 
