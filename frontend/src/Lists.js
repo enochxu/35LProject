@@ -36,7 +36,16 @@ const Lists = ({checkLogin}) => {
   }
 
   const handleChange = (e) => {
-    setNewItem(e.target.value);
+    //console.log(e.target.value + "" + typeof(e.target.value));
+    const currTime = new Date(); // Garbage collected
+    // console.log(currTime.toDateString());
+    const [hour, minutes, seconds] = [currTime.getHours(), currTime.getMinutes(), currTime.getSeconds()];
+    const newItemWithDate = e.target.value + " (Time/Date: " + hour + ":" + minutes + " / " + currTime.toDateString() + ")";
+    if (e.target.value != "") {
+      setNewItem(newItemWithDate);
+    } else {
+      setNewItem("");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -46,17 +55,19 @@ const Lists = ({checkLogin}) => {
         method: "post",
         url: `http://localhost:5000/additem`,
         data: {
-          item: newItem,
+          item: (newItem + "test"),
         },
         withCredentials: true,
       })
         .then((res) => {
           const newItems = items;
+          // console.log(currTime.toDateString());
           newItems[listNum].push(newItem);
           setItems(newItems);
-          setNewItem("");
+	  setNewItem(""); 
         })
         .catch((err) => {
+	  console.log("error");
           setShowError(true);
         });
     }
