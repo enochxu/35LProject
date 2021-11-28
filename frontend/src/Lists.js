@@ -30,6 +30,11 @@ const Lists = ({checkLogin}) => {
   const [newItem, setNewItem] = useState("");
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
+  // Design of filterItem
+  // Should never be null, should always be string length 0+
+  // Therefore listing items that have substring of filterItem
+  // Should list all items, not no items
+  const [filterItem, setFilterItem] = useState("");
 
   const handleSelector = (e) => {
     setListNum(e.target.value);
@@ -46,6 +51,10 @@ const Lists = ({checkLogin}) => {
     } else {
       setNewItem("");
     }
+  };
+
+  const handleFilterChange = (e) => {
+    setFilterItem(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -73,6 +82,12 @@ const Lists = ({checkLogin}) => {
     }
     e.target.reset();
   };
+
+  // Filter versus search function,
+  // filter means no need to press enter
+  // const handleFilterSubmit = (e) => {
+    // setFilterItem("");
+  // };
 
   // const removeItem = (index) => {};
 
@@ -117,16 +132,30 @@ const Lists = ({checkLogin}) => {
             )
           }
         </div>
+
+	<div>
+          <InputGroup className="mb-3">
+            <textarea
+	      name="Search Filter"
+              placeholder="Search your list by text or date here"
+              onChange={handleFilterChange}
+            >
+	    </textarea>
+          </InputGroup>
+	</div>
+
         <div className="list">
           {
             loading ? ( <Loading /> ) : (
               <div className="list-items">
                 {items[listNum].map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <p>{item}</p>
-                    </div>
-                  );
+                  if (item.toLowerCase().includes(filterItem.toLowerCase())) {
+		    return (
+                      <div key={index}>
+                        <p>{item}</p>
+                      </div>
+                    );
+		  }
                 })}
               </div>  
             )
