@@ -55,7 +55,7 @@ const Lists = ({checkLogin}) => {
         method: "post",
         url: `http://localhost:5000/additem`,
         data: {
-          item: (newItem + "test"),
+          item: (newItem),
         },
         withCredentials: true,
       })
@@ -67,7 +67,7 @@ const Lists = ({checkLogin}) => {
 	  setNewItem(""); 
         })
         .catch((err) => {
-	  console.log("error");
+	  // console.log("error");
           setShowError(true);
         });
     }
