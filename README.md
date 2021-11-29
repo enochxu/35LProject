@@ -56,7 +56,7 @@ Once the extension is downloaded:
 ### `You may also use 'mongodb://127.0.0.1:27017' as the default server connection.`
 
 source: `https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/`
-source: `https://code.visualstudio.com/docs/azure/mongodb`
+`https://code.visualstudio.com/docs/azure/mongodb`
 
 # Turning off AirPlay Receiver for macOS Monterey
 If you are using MacOS Monterey, make sure you disable your AirPlay Receiver feature
