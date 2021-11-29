@@ -98,7 +98,7 @@ const Lists = ({ checkLogin }) => {
     e.target.reset();
   };
 
-  const handleShare = (e) => {
+  const submitShare = (e) => {
     e.preventDefault();
     axios({
       method: "put",
@@ -187,12 +187,12 @@ const Lists = ({ checkLogin }) => {
       </header>
       <div className="App-body">
         <div className="export">
-          <form onSubmit={handleShare}>
+          <form onSubmit={ submitShare }>
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Enter the username to share with"
                 aria-label="new-item"
-                onChange={handleChange}
+                onChange={ (e) => setShareUsername(e.target.value) }
               />
               <Button variant="primary" type="submit">
                 share
