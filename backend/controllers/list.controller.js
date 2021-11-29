@@ -56,7 +56,36 @@ const editItem = async (req, res) => {
 
 }
 
+// NOT WORKING, PROTOTYPE
+const removeItem = async (req, res) => {
+  // get user
+  if (!req.cookies.token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  if (!req.body.rmItem) {
+    return res.status(400).json({ message: 'Item missing.' });
+  }
+
+  const user = await getUser(req.cookies.token);
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  Users.updateOne(
+    { username: user.username },
+    { $pull: { list: rmItem } }
+  )
+    .then(() => {
+      res.status(200).json({ message: "Item removed." });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "Could not remove item." });
+    });
+}
+
 module.exports = {
   getList,
   addItem,
+  removeItem
 }

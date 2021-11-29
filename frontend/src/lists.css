@@ -22,3 +22,25 @@
 .App-header a {
     font-size: small;
 }
+
+.list-item {
+    margin-bottom: 5px;
+}
+
+.list-button {
+    width: 100px;
+    height: 40px;
+    padding: 0px 0px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.filter-text-area {
+    margin: auto;
+    text-align: center;
+    resize: none;
+    overflow: auto;
+    width: 500px;
+    height: 30px;
+}

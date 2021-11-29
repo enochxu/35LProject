@@ -36,5 +36,7 @@ app.put('/sharelist', userscontroller.shareList);
 // list routes
 app.get('/getlist', listcontroller.getList);
 app.post('/additem', listcontroller.addItem);
+// NOT WORKING, PROTOTYPE
+app.post('/removeitem', listcontroller.removeItem);
 
 app.listen(5000);

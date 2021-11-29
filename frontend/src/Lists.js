@@ -27,6 +27,7 @@ const Lists = ({checkLogin}) => {
   const [usernames, setUsernames] = useState([]);
   const [listNum, setListNum] = useState(0);
   const [items, setItems] = useState([]);
+  const [rmItem, setRmItem] = useState("");
   const [newItem, setNewItem] = useState("");
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
@@ -89,7 +90,34 @@ const Lists = ({checkLogin}) => {
     // setFilterItem("");
   // };
 
-  // const removeItem = (index) => {};
+  // NOT WORKING, PROTOTYPE
+  const removeItem = (e) => {
+    if (listNum == 0) {
+      axios ({
+	method: "post",
+        url: `http://localhost:5000/removeitem`,
+        data: {
+          // Need to change to rmItem
+          rmItem: (""),
+        },
+        withCredentials: true,
+      })
+	.then((res) => {
+          const itemsMinusItem = items;
+          while (itemsMinusItem.indexOf(rmItem) != -1) {
+            itemsMinusItem[listNum].splice(itemsMinusItem.indexOf(rmItem), itemsMinusItem.indexOf(rmItem) + 1);
+          }
+          setItems(itemsMinusItem);
+	  setRmItem("");
+        })
+        .catch((err) => {
+          // Probably want to make a
+          // "setShowRemoveError"
+          console.log("error in removeItem");
+          setShowError(true);
+        })
+    }
+  };
 
   const logout = () => {
     axios({
@@ -136,6 +164,7 @@ const Lists = ({checkLogin}) => {
 	<div>
           <InputGroup className="mb-3">
             <textarea
+	      className="filter-text-area"
 	      name="Search Filter"
               placeholder="Search your list by text or date here"
               onChange={handleFilterChange}
@@ -152,10 +181,14 @@ const Lists = ({checkLogin}) => {
                   if (item.toLowerCase().includes(filterItem.toLowerCase())) {
 		    return (
                       <div key={index}>
-                        <p>{item}</p>
+                        <p className="list-item">{item}</p>
+			<Button className="list-button">
+			  Done
+			</Button>
                       </div>
                     );
-		  }
+		  } 
+                  return (<div></div>);
                 })}
               </div>  
             )
