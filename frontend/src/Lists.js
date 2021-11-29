@@ -88,6 +88,7 @@ const Lists = ({ checkLogin }) => {
           newItems[listNum].push(newItem);
           setItems(newItems);
           setNewItem("");
+          setShowError(false);
         })
         .catch((err) => {
           // console.log("error");
@@ -110,6 +111,7 @@ const Lists = ({ checkLogin }) => {
       // NEED TO UPDATE
       .then((res) => {
         setShareUsername("");
+        setShowError(false);
         e.target.reset();
       })
       //  NEED TO UPDATE
