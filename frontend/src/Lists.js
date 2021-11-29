@@ -30,6 +30,7 @@ const Lists = ({checkLogin}) => {
   const [newItem, setNewItem] = useState("");
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [shareUsername, setShareUsername] = useState("");
   // Design of filterItem
   // Should never be null, should always be string length 0+
   // Therefore listing items that have substring of filterItem
@@ -83,6 +84,24 @@ const Lists = ({checkLogin}) => {
     e.target.reset();
   };
 
+  const handleShare = (e) => {
+    e.preventDefault();
+    axios({
+      method:"put",
+      url: `http://localhost:5000/sharelist`,
+      data: { item:(shareUsername) },
+      withCredentials: true,
+    })
+    // NEED TO UPDATE
+    .then((res) => {
+      setShareUsername("");
+    })
+    //  NEED TO UPDATE
+    .catch((err) => {
+      setShowError(true);
+    });
+  };
+
   // Filter versus search function,
   // filter means no need to press enter
   // const handleFilterSubmit = (e) => {
@@ -115,13 +134,11 @@ const Lists = ({checkLogin}) => {
       </header>
       <div className="App-body">
         <div className="export">
-          {/* NEED TO CHANGE THE FUNCTION INSIDE */}
-          <form onSubmit = { handleSubmit }>
+          <form onSubmit = { handleShare }>
               <InputGroup className="mb-3">
                 <FormControl
                   placeholder="Enter the username to share with"
                   aria-label="new-item"
-                  // ALSO NEED TO BE CHANGED MAYBE
                   onChange = { handleChange } 
                 />
                 <Button variant="primary" type="submit">share</Button>
