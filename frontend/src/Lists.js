@@ -114,6 +114,20 @@ const Lists = ({checkLogin}) => {
         </Button>
       </header>
       <div className="App-body">
+        <div className="export">
+          {/* NEED TO CHANGE THE FUNCTION INSIDE */}
+          <form onSubmit = { handleSubmit }>
+              <InputGroup className="mb-3">
+                <FormControl
+                  placeholder="Enter the username to share with"
+                  aria-label="new-item"
+                  // ALSO NEED TO BE CHANGED MAYBE
+                  onChange = { handleChange } 
+                />
+                <Button variant="primary" type="submit">share</Button>
+              </InputGroup>
+            </form>
+        </div>
         <div className="list-selector">
           <div className="selector-label">Select a List:</div>
           {
