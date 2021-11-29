@@ -36,7 +36,7 @@ app.put('/sharelist', userscontroller.shareList);
 // list routes
 app.get('/getlist', listcontroller.getList);
 app.post('/additem', listcontroller.addItem);
-// NOT WORKING, PROTOTYPE
+// Causes bug preventing repeat of add item
 app.post('/removeitem', listcontroller.removeItem);
 
 app.listen(5000);

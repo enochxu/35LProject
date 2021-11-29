@@ -56,14 +56,14 @@ const editItem = async (req, res) => {
 
 }
 
-// NOT WORKING, PROTOTYPE
+// Causes a bug preventing repeat adds to list
 const removeItem = async (req, res) => {
   // get user
   if (!req.cookies.token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  if (!req.body.rmItem) {
+  if (!req.body.item) {
     return res.status(400).json({ message: 'Item missing.' });
   }
 
@@ -74,7 +74,7 @@ const removeItem = async (req, res) => {
 
   Users.updateOne(
     { username: user.username },
-    { $pull: { list: rmItem } }
+    { $pull: { list: req.body.item } }
   )
     .then(() => {
       res.status(200).json({ message: "Item removed." });
@@ -87,5 +87,5 @@ const removeItem = async (req, res) => {
 module.exports = {
   getList,
   addItem,
-  removeItem
+  removeItem,
 }

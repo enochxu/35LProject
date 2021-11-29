@@ -42,6 +42,10 @@ const Lists = ({checkLogin}) => {
     setListNum(e.target.value);
   }
 
+  const handleFilterChange = (e) => {
+    setFilterItem(e.target.value);
+  };
+
   const handleChange = (e) => {
     //console.log(e.target.value + "" + typeof(e.target.value));
     const currTime = new Date(); // Garbage collected
@@ -53,10 +57,6 @@ const Lists = ({checkLogin}) => {
     } else {
       setNewItem("");
     }
-  };
-
-  const handleFilterChange = (e) => {
-    setFilterItem(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -109,33 +109,41 @@ const Lists = ({checkLogin}) => {
     // setFilterItem("");
   // };
 
-  // NOT WORKING, PROTOTYPE
-  const removeItem = (e) => {
-    if (listNum == 0) {
-      axios ({
-	method: "post",
+  const setRemoveItem = (e) => {
+    //console.log(e.target.value);
+    setRmItem(e.target.value);
+  }
+
+  // NOTE: DOES NOT WORK ON INTERNET EXPLORER
+  // DUE TO IE IMPLEMENTATION OF BUTTON.VALUE
+  // Currently causes minor bug where user
+  // cannot add same element to list on repeat
+  const handleRemove = (e) => {
+    e.preventDefault();
+    if (listNum == 0 && rmItem) {
+      axios({
+        method:"post",
         url: `http://localhost:5000/removeitem`,
-        data: {
-          // Need to change to rmItem
-          rmItem: (""),
-        },
+        data: { item: rmItem, },
         withCredentials: true,
       })
-	.then((res) => {
-          const itemsMinusItem = items;
-          while (itemsMinusItem.indexOf(rmItem) != -1) {
-            itemsMinusItem[listNum].splice(itemsMinusItem.indexOf(rmItem), itemsMinusItem.indexOf(rmItem) + 1);
-          }
-          setItems(itemsMinusItem);
+        .then((response) => {
+          //console.log(response);
+
+	  const newItems = items;
+	  newItems[listNum] = items[listNum].filter(word => word !== rmItem);
+          setItems(newItems);
+
 	  setRmItem("");
         })
-        .catch((err) => {
+        .catch((error) => {
           // Probably want to make a
           // "setShowRemoveError"
-          console.log("error in removeItem");
+          // console.log(error.response);
           setShowError(true);
         })
     }
+    //e.target.reset();
   };
 
   const logout = () => {
@@ -213,7 +221,7 @@ const Lists = ({checkLogin}) => {
 		    return (
                       <div key={index}>
                         <p className="list-item">{item}</p>
-			<Button className="list-button">
+			<Button className="list-button" value={item} onMouseEnter={(e) => setRemoveItem(e)} onClick={(e) => handleRemove(e)}>
 			  Done
 			</Button>
                       </div>
