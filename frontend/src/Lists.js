@@ -3,9 +3,9 @@ import { Button, InputGroup, FormControl, Alert, Form } from "react-bootstrap";
 import Loading from "./Loading";
 import axios from "axios";
 import "./index.css";
-import "./lists.css"
+import "./lists.css";
 
-const Lists = ({checkLogin}) => {
+const Lists = ({ checkLogin }) => {
   useEffect(() => {
     document.title = "Lists";
     axios({
@@ -40,7 +40,7 @@ const Lists = ({checkLogin}) => {
 
   const handleSelector = (e) => {
     setListNum(e.target.value);
-  }
+  };
 
   const handleFilterChange = (e) => {
     setFilterItem(e.target.value);
@@ -50,8 +50,20 @@ const Lists = ({checkLogin}) => {
     //console.log(e.target.value + "" + typeof(e.target.value));
     const currTime = new Date(); // Garbage collected
     // console.log(currTime.toDateString());
-    const [hour, minutes, seconds] = [currTime.getHours(), currTime.getMinutes(), currTime.getSeconds()];
-    const newItemWithDate = e.target.value + " (Time/Date: " + hour + ":" + minutes + " / " + currTime.toDateString() + ")";
+    const [hour, minutes, seconds] = [
+      currTime.getHours(),
+      currTime.getMinutes(),
+      currTime.getSeconds(),
+    ];
+    const newItemWithDate =
+      e.target.value +
+      " (Time/Date: " +
+      hour +
+      ":" +
+      minutes +
+      " / " +
+      currTime.toDateString() +
+      ")";
     if (e.target.value != "") {
       setNewItem(newItemWithDate);
     } else {
@@ -66,7 +78,7 @@ const Lists = ({checkLogin}) => {
         method: "post",
         url: `http://localhost:5000/additem`,
         data: {
-          item: (newItem),
+          item: newItem,
         },
         withCredentials: true,
       })
@@ -75,10 +87,11 @@ const Lists = ({checkLogin}) => {
           // console.log(currTime.toDateString());
           newItems[listNum].push(newItem);
           setItems(newItems);
-	  setNewItem(""); 
+          setNewItem("");
+          setShowError(false);
         })
         .catch((err) => {
-	  // console.log("error");
+          // console.log("error");
           setShowError(true);
         });
     }
@@ -88,25 +101,29 @@ const Lists = ({checkLogin}) => {
   const handleShare = (e) => {
     e.preventDefault();
     axios({
-      method:"put",
+      method: "put",
       url: `http://localhost:5000/sharelist`,
-      data: { item:(shareUsername) },
+      data: {
+        shareUsername,
+      },
       withCredentials: true,
     })
-    // NEED TO UPDATE
-    .then((res) => {
-      setShareUsername("");
-    })
-    //  NEED TO UPDATE
-    .catch((err) => {
-      setShowError(true);
-    });
+      // NEED TO UPDATE
+      .then((res) => {
+        setShareUsername("");
+        setShowError(false);
+        e.target.reset();
+      })
+      //  NEED TO UPDATE
+      .catch((err) => {
+        setShowError(true);
+      });
   };
 
   // Filter versus search function,
   // filter means no need to press enter
   // const handleFilterSubmit = (e) => {
-    // setFilterItem("");
+  // setFilterItem("");
   // };
 
   const setRemoveItem = (e) => {
@@ -141,7 +158,7 @@ const Lists = ({checkLogin}) => {
           // "setShowRemoveError"
           // console.log(error.response);
           setShowError(true);
-        })
+        });
     }
     //e.target.reset();
   };
@@ -152,13 +169,13 @@ const Lists = ({checkLogin}) => {
       url: `http://localhost:5000/logout`,
       withCredentials: true,
     })
-    .then((res) => {
-      checkLogin();
-    })
-    .catch((err) => {
-      console.log(err);
-    }); 
-  }
+      .then((res) => {
+        checkLogin();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="App">
@@ -170,51 +187,47 @@ const Lists = ({checkLogin}) => {
       </header>
       <div className="App-body">
         <div className="export">
-          <form onSubmit = { handleShare }>
-              <InputGroup className="mb-3">
-                <FormControl
-                  placeholder="Enter the username to share with"
-                  aria-label="new-item"
-                  onChange = { handleChange } 
-                />
-                <Button variant="primary" type="submit">share</Button>
-              </InputGroup>
-            </form>
+          <form onSubmit={handleShare}>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Enter the username to share with"
+                aria-label="new-item"
+                onChange={handleChange}
+              />
+              <Button variant="primary" type="submit">
+                share
+              </Button>
+            </InputGroup>
+          </form>
         </div>
         <div className="list-selector">
           <div className="selector-label">Select a List:</div>
-          {
-            loading ? (<Loading /> ) : (
+          {loading ? (
+            <Loading />
+          ) : (
             <Form.Select aria-label="Select a list" onChange={handleSelector}>
-            {
-              usernames.map((username, index) => {
-                return (
-                  <option value={index}>
-                    {username}
-                  </option>
-                );
-              })
-            }
+              {usernames.map((username, index) => {
+                return <option value={index}>{username}</option>;
+              })}
             </Form.Select>
-            )
-          }
+          )}
         </div>
 
-	<div>
+        <div>
           <InputGroup className="mb-3">
             <textarea
-	      className="filter-text-area"
-	      name="Search Filter"
+              className="filter-text-area"
+              name="Search Filter"
               placeholder="Search your list by text or date here"
               onChange={handleFilterChange}
-            >
-	    </textarea>
+            ></textarea>
           </InputGroup>
-	</div>
+        </div>
 
         <div className="list">
-          {
-            loading ? ( <Loading /> ) : (
+          {loading ? ( 
+            <Loading /> 
+          ) : (
               <div className="list-items">
                 {items[listNum].map((item, index) => {
                   if (item.toLowerCase().includes(filterItem.toLowerCase())) {
@@ -230,12 +243,10 @@ const Lists = ({checkLogin}) => {
                   return (<div></div>);
                 })}
               </div>  
-            )
-          }
+            )}
 
-          {
-            listNum == 0 &&
-            (<form onSubmit={handleSubmit}>
+          {listNum == 0 && (
+            <form onSubmit={handleSubmit}>
               <InputGroup className="mb-3">
                 <FormControl
                   placeholder="Type here"
@@ -247,12 +258,10 @@ const Lists = ({checkLogin}) => {
                 </Button>
               </InputGroup>
             </form>
-            )
-          }
+          )}
           {showError && <Alert variant="danger">Error Adding Item</Alert>}
         </div>
       </div>
-      
     </div>
   );
 };
