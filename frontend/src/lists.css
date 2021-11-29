@@ -44,3 +44,27 @@
     width: 500px;
     height: 30px;
 }
+
+::placeholder {
+    font-family: 'Roboto', 'Oxygen','Ubuntu', 'Cantarell', 'Fira Sans', 
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+    opacity: 1; 
+
+}
+
+.input-group {
+    position: relative;
+    margin: 5px;
+    
+}
+
+.form-control {
+    display: block;
+    padding: 0.35rem, 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.2rem;
+}
+
+p.list-items { 
+    font-weight: 500;
+}
