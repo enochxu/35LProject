@@ -5,7 +5,7 @@ import axios from "axios";
 import "./index.css";
 import "./lists.css";
 
-const Lists = ({ checkLogin }) => {
+const Lists = ({ checkLogin, loggedInUser }) => {
   useEffect(() => {
     document.title = "Lists";
     axios({
@@ -32,6 +32,7 @@ const Lists = ({ checkLogin }) => {
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   const [shareUsername, setShareUsername] = useState("");
+
   // Design of filterItem
   // Should never be null, should always be string length 0+
   // Therefore listing items that have substring of filterItem
@@ -73,7 +74,7 @@ const Lists = ({ checkLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (listNum == 0 && newItem) {
+    if (usernames[listNum] === loggedInUser && newItem) {
       axios({
         method: "post",
         url: `http://localhost:5000/additem`,
@@ -245,7 +246,7 @@ const Lists = ({ checkLogin }) => {
               </div>  
             )}
 
-          {listNum == 0 && (
+          {usernames[listNum] === loggedInUser && (
             <form onSubmit={handleSubmit}>
               <InputGroup className="mb-3">
                 <FormControl

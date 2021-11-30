@@ -10,6 +10,7 @@ import Login from "./login/Login";
 function App() {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     checkLogin()
@@ -22,6 +23,7 @@ function App() {
       withCredentials: true,
     })
       .then((res) => {
+        setUser(res.data.username);
         setLoggedIn(true);
         setLoading(false);
       })
@@ -35,7 +37,7 @@ function App() {
     <Router>
       {loading ? (<Loading />) : (
         <Routes>
-          <Route exact path="/" element={(loggedIn && <Lists checkLogin={checkLogin}/>) || (<Navigate to="/login"/>)}/>
+          <Route exact path="/" element={(loggedIn && <Lists checkLogin={checkLogin} loggedInUser={user}/>) || (<Navigate to="/login"/>)}/>
           <Route exact path="/login" element={(!loggedIn && <Login checkLogin={checkLogin}/>) || (<Navigate to="/"/>)}/>
           <Route exact path="/createaccount" element={<CreateAccount/>}/>  
         </Routes>
