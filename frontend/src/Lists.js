@@ -138,7 +138,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
   // cannot add same element to list on repeat
   const handleRemove = (e) => {
     e.preventDefault();
-    if (listNum == 0 && rmItem) {
+    if (usernames[listNum] === loggedInUser && rmItem) {
       axios({
         method: "post",
         url: `http://localhost:5000/removeitem`,
