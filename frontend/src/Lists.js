@@ -130,7 +130,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
   const setRemoveItem = (e) => {
     //console.log(e.target.value);
     setRmItem(e.target.value);
-  }
+  };
 
   // NOTE: DOES NOT WORK ON INTERNET EXPLORER
   // DUE TO IE IMPLEMENTATION OF BUTTON.VALUE
@@ -140,19 +140,19 @@ const Lists = ({ checkLogin, loggedInUser }) => {
     e.preventDefault();
     if (listNum == 0 && rmItem) {
       axios({
-        method:"post",
+        method: "post",
         url: `http://localhost:5000/removeitem`,
-        data: { item: rmItem, },
+        data: { item: rmItem },
         withCredentials: true,
       })
         .then((response) => {
           //console.log(response);
 
-	  const newItems = items;
-	  newItems[listNum] = items[listNum].filter(word => word !== rmItem);
+          const newItems = items;
+          newItems[listNum] = items[listNum].filter((word) => word !== rmItem);
           setItems(newItems);
 
-	  setRmItem("");
+          setRmItem("");
         })
         .catch((error) => {
           // Probably want to make a
@@ -188,12 +188,12 @@ const Lists = ({ checkLogin, loggedInUser }) => {
       </header>
       <div className="App-body">
         <div className="export">
-          <form onSubmit={ submitShare }>
+          <form onSubmit={submitShare}>
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Enter the username to share with"
                 aria-label="new-item"
-                onChange={ (e) => setShareUsername(e.target.value) }
+                onChange={(e) => setShareUsername(e.target.value)}
               />
               <Button variant="primary" type="submit">
                 share
@@ -226,25 +226,32 @@ const Lists = ({ checkLogin, loggedInUser }) => {
         </div>
 
         <div className="list">
-          {loading ? ( 
-            <Loading /> 
+          {loading ? (
+            <Loading />
           ) : (
-              <div className="list-items">
-                {items[listNum].map((item, index) => {
-                  if (item.toLowerCase().includes(filterItem.toLowerCase())) {
-		    return (
-                      <div key={index}>
-                        <p className="list-item">{item}</p>
-			<Button className="list-button" value={item} onMouseEnter={(e) => setRemoveItem(e)} onClick={(e) => handleRemove(e)}>
-			  Done
-			</Button>
-                      </div>
-                    );
-		  } 
-                  return (<div></div>);
-                })}
-              </div>  
-            )}
+            <div className="list-items">
+              {items[listNum].map((item, index) => {
+                if (item.toLowerCase().includes(filterItem.toLowerCase())) {
+                  return (
+                    <div key={index}>
+                      <p className="list-item">{item}</p>
+                      {usernames[listNum] === loggedInUser && (
+                        <Button
+                          className="list-button"
+                          value={item}
+                          onMouseEnter={(e) => setRemoveItem(e)}
+                          onClick={(e) => handleRemove(e)}
+                        >
+                          Done
+                        </Button>
+                      )}
+                    </div>
+                  );
+                }
+                return <div></div>;
+              })}
+            </div>
+          )}
 
           {usernames[listNum] === loggedInUser && (
             <form onSubmit={handleSubmit}>
