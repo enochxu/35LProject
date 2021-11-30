@@ -36,7 +36,8 @@ app.put('/sharelist', userscontroller.shareList);
 // list routes
 app.get('/getlist', listcontroller.getList);
 app.post('/additem', listcontroller.addItem);
-// Causes bug preventing repeat of add item
+// Causes minor bug preventing repeat of add item (single character)
 app.post('/removeitem', listcontroller.removeItem);
+app.post('/clearitems', listcontroller.clearItems);
 
 app.listen(5000);

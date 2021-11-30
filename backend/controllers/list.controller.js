@@ -84,8 +84,33 @@ const removeItem = async (req, res) => {
     });
 }
 
+const clearItems = async (req, res) => {
+  // get user
+  if (!req.cookies.token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const user = await getUser(req.cookies.token);
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  Users.updateOne(
+    { username: user.username },
+    { $set: { list: [] } }
+  )
+    .then(() => {
+      res.status(200).json({ message: "Items cleared." });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "Could not clear items." });
+    });
+}
+
+
 module.exports = {
   getList,
   addItem,
   removeItem,
+  clearItems,
 }

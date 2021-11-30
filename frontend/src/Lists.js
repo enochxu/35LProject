@@ -32,6 +32,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   const [shareUsername, setShareUsername] = useState("");
+  const [doClear, setDoClear] = useState(false);
 
   // Design of filterItem
   // Should never be null, should always be string length 0+
@@ -164,6 +165,42 @@ const Lists = ({ checkLogin, loggedInUser }) => {
     //e.target.reset();
   };
 
+  const handleClear = (e) => {
+    e.preventDefault();
+    //console.log("handleClear");
+    if (doClear) {
+      //console.log("doClear");
+      axios({
+        method: "post",
+        url: `http://localhost:5000/clearitems`,
+        withCredentials: true,
+      })
+        .then((response) => {
+          //console.log(response);
+
+	  // Filter out everything
+          const newItems = items;
+          newItems[listNum] = items[listNum].filter((word) => 1 === 0);
+          setItems(newItems);
+          // No-op command to cause update to state
+	  setDoClear(false);
+        })
+        .catch((error) => {
+          // Probably want to make a
+          // "setShowClearError"
+          // console.log(error.response);
+          setShowError(true);
+        });
+    }
+    setDoClear(true);
+  };
+
+  const handleCancelClear = (e) => {
+    e.preventDefault();
+    //console.log("cancelClear");
+    setDoClear(false);
+  }
+
   const logout = () => {
     axios({
       method: "post",
@@ -267,6 +304,17 @@ const Lists = ({ checkLogin, loggedInUser }) => {
               </InputGroup>
             </form>
           )}
+
+	  {usernames[listNum] === loggedInUser && (
+            <Button
+              className="list-button"
+              onMouseOut={(e) => handleCancelClear(e)}
+	      onClick={(e) => handleClear(e)}
+ 	    >
+ 	      Clear list
+            </Button>
+          )}
+          
           {showError && <Alert variant="danger">Error Adding Item</Alert>}
         </div>
       </div>
