@@ -81,6 +81,11 @@ const shareList = async (req, res) => {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
+  const shareUser = await Users.findOne({ username: req.body.shareUsername });
+  if (!shareUser) {
+    return res.status(400).json({ message: 'User does not exist.' });
+  }
+
   Users.updateOne(
     { username: req.body.shareUsername },
     { $addToSet: { hasAccess: user.username } }
