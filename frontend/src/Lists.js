@@ -33,6 +33,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
   const [showError, setShowError] = useState(false);
   const [shareUsername, setShareUsername] = useState("");
   const [doClear, setDoClear] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Design of filterItem
   // Should never be null, should always be string length 0+
@@ -119,6 +120,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
       //  NEED TO UPDATE
       .catch((err) => {
         setShowError(true);
+        setErrorMessage("The user you are trying to share to does not exist.");
       });
   };
 
@@ -315,7 +317,7 @@ const Lists = ({ checkLogin, loggedInUser }) => {
             </Button>
           )}
           
-          {showError && <Alert variant="danger">Error Adding Item</Alert>}
+          {showError && <Alert variant="danger">{errorMessage}</Alert>}
         </div>
       </div>
     </div>
